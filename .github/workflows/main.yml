@@ -15,8 +15,6 @@ jobs:
     - uses: xmake-io/github-action-setup-xmake@v1
       with:
         xmake-version: v2.2.8
-    - name: make
-      run: xmake
     - name: test
       run: |
         xmake --version
