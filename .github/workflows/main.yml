@@ -16,6 +16,8 @@ jobs:
       with:
         xmake-version: v2.2.8
     - name: test
+      env:
+        CI: true
       run: |
         xmake --version
         xmake l os.getenvs
