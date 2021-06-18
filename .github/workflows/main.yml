@@ -11,10 +11,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: false
+        uses: actions/checkout@v1
       - name: prepare python
         run: |
           echo hello
