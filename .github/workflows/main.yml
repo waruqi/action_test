@@ -20,7 +20,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_name: xmake-mirror/openssl
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.XMAKE_REPO_TOKEN }}
           file: README.md
           asset_name: READNE.win${{ matrix.arch }}.md
           tag: "3.9.5"
