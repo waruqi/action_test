@@ -1,27 +1,41 @@
+name: Linux
 
-name: windows
-
-on: push
+on:
+  push:
+    branches:
+      - test
 
 jobs:
-  python:
+  build:
     strategy:
       matrix:
-        arch: ["32", "64"]
-    runs-on: windows-latest
+        os: [ubuntu-latest]
+        kind: [static, shared]
+
+    runs-on: ${{ matrix.os }}
+
+    concurrency:
+        group: ${{ github.ref }}-${{ github.base_ref }}-${{ github.head_ref }}-Linux-${{ matrix.kind }}
+        cancel-in-progress: true
     steps:
-      - name: checkout
-        uses: actions/checkout@v1
-      - name: prepare python
-        run: |
-          echo hello
-          
-      - name: publish to release
-        uses: svenstaro/upload-release-action@v2
+      - uses: actions/checkout@v1
+      - uses: xmake-io/github-action-setup-xmake@v1
         with:
-          repo_name: xmake-mirror/openssl
-          repo_token: ${{ secrets.XMAKE_REPO_TOKEN }}
-          file: README.md
-          asset_name: READNE.win${{ matrix.arch }}.md
-          tag: "3.9.5"
-          body: "test body 3.9.5"
+          xmake-version: branch@dev
+
+      - name: Installation
+        run: |
+          # TODO we will remove it later
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 60
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60
+          sudo update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-9 60
+          sudo update-alternatives --set g++ /usr/bin/g++-9
+          sudo update-alternatives --set gcc /usr/bin/gcc-9
+          sudo update-alternatives --set cpp /usr/bin/cpp-9
+
+      - name: Tests
+        run: |
+          xmake
+
