@@ -1,5 +1,7 @@
 -- add_requires("boost", {configs = {all = true}})
 
+add_requires("boost", {configs = {log = true}})
+--[[
 add_requires("boost", {configs = {
     serialization = true,
     random = true,
@@ -38,7 +40,7 @@ add_requires("boost", {configs = {
     atomic = true,
     shared = true
     }})
-
+]]
 -- add_requires("cmake::Boost", {system = true, configs = {components = {"log", "system","filesystem","regex"}}})
 
 target("test")
